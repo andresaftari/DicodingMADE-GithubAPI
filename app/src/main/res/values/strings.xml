@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Testing</string>
+
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint">Tap the search icon to start searching Github users :)</string>
+    <string name="search_title">Search User</string>
+</resources>
