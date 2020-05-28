@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.lastprojectmade">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <permission
+        android:name="com.example.lastprojectmade.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.example.lastprojectmade.WRITE_DATABASE"
+        android:protectionLevel="normal" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".view.activity.SettingActivity"></activity>
+
+        <receiver
+            android:name=".notification.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <provider
+            android:name=".util.provider.FavProvider"
+            android:authorities="com.example.lastprojectmade"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".view.activity.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.FavoriteActivity" />
+        <activity android:name=".view.activity.DetailActivity" />
+        <activity android:name=".MainActivity" />
+
+        <provider
+            android:name=".util.provider.FavoriteProvider"
+            android:authorities="com.example.lastprojectmade"
+            android:exported="true"
+            android:readPermission="com.example.lastprojectmade.READ_DATABASE"
+            android:writePermission="com.example.lastprojectmade.WRITE_DATABASE" />
+    </application>
+
+</manifest>

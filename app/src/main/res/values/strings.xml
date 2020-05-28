@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Github API Dicoding</string>
+
+    <!-- Search components -->
+    <string name="search_hint">Tap the search icon to start searching Github users :)</string>
+    <string name="search_title">Search User</string>
+    <string name="search">Search Github User. . .</string>
+
+    <!-- Detail components -->
+    <string name="avatardesc">avatarDesc</string>
+    <string name="username">Username</string>
+    <string name="fullname">Full Name</string>
+    <string name="link">Github Link</string>
+    <string name="favourite">Favourite List</string>
+
+    <!-- Following & Followers -->
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="delete">delete</string>
+
+    <!-- Setting -->
+    <string name="setting_title">Notification Setting</string>
+    <string name="notifHint">Notification has been set daily at 9 A.M by default</string>
+    <string name="notifOff">Turn off notification</string>
+    <string name="notifON">Turn on notification</string>
+</resources>
