@@ -2,6 +2,8 @@ package com.example.lastprojectmade.view.activity
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +23,9 @@ import com.example.lastprojectmade.api.EndPoint
 import com.example.lastprojectmade.model.data.User
 import com.example.lastprojectmade.util.db.DatabaseContract.FavColumns.Companion.CONTENT_URI
 import com.example.lastprojectmade.util.db.DatabaseContract.FavColumns.Companion.LINK
+import com.example.lastprojectmade.util.db.DatabaseContract.FavColumns.Companion.TABLE_NAME
 import com.example.lastprojectmade.util.db.DatabaseContract.FavColumns.Companion.USERNAME
+import com.example.lastprojectmade.util.helper.DBHelper
 import com.example.lastprojectmade.util.helper.MappingHelper
 import com.example.lastprojectmade.view.fragment.FollowersFragment
 import com.example.lastprojectmade.view.fragment.FollowingFragment
@@ -54,7 +58,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         if (dataIntent != null) isEdit = true
         if (dataIntent == null) User()
 
-        if (isEdit == true) {
+        if (isEdit) {
             val cursor = contentResolver?.query(
                 uriWithId,
                 null,
@@ -62,7 +66,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 null,
                 null
             )
-
             if (cursor != null) {
                 MappingHelper.mapCursorToObj(cursor)
                 cursor.close()
@@ -113,25 +116,41 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         this.setBottomNav()
     }
 
+    @SuppressLint("Recycle")
     override fun onClick(v: View) {
         val dataIntent = intent.getParcelableExtra(EXTRA_DATA) as User
+        val db: SQLiteDatabase = DBHelper(this).readableDatabase
+        val sql = db.rawQuery(
+            "SELECT * FROM $TABLE_NAME WHERE _id = '${dataIntent.id}' AND login = '${dataIntent.login}'",
+            null,
+            null
+        )
+        val contentValues = ContentValues()
+        contentValues.put(USERNAME, dataIntent.login)
+        contentValues.put(LINK, dataIntent.htmlURL)
 
         if (v.id == R.id.fab_favs) {
-            val contentValues = ContentValues()
-            contentValues.put(USERNAME, dataIntent.login)
-            contentValues.put(LINK, dataIntent.htmlURL)
-
-            if (isEdit) {
+            if (sql.count == 0) {
                 contentResolver.insert(CONTENT_URI, contentValues)
-                isEdit = false
                 Toast.makeText(this, "ADDED ${dataIntent.login}!", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, FavoriteActivity::class.java))
+            } else {
+                Toast.makeText(this, "ALREADY ADDED ${dataIntent.login}!", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
     }
 
+    @SuppressLint("Recycle")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (isEdit) menuInflater.inflate(R.menu.menu_delete, menu)
+        val dataIntent = intent.getParcelableExtra(EXTRA_DATA) as User
+        val db: SQLiteDatabase = DBHelper(this).readableDatabase
+        val sql = db.rawQuery(
+            "SELECT * FROM $TABLE_NAME WHERE _id = '${dataIntent.id}' AND login = '${dataIntent.login}'",
+            null,
+            null
+        )
+        if (sql.count == 1) menuInflater.inflate(R.menu.menu_delete, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

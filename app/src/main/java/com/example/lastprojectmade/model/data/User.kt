@@ -18,7 +18,6 @@ data class User(
     @SerializedName("name")
     @Expose
     var name: String? = null,
-
     @SerializedName("avatar_url")
     @Expose
     var avatarURL: String? = null,
